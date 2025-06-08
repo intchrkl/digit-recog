@@ -1,8 +1,9 @@
 import numpy as np
-import layers
+from layers import Linear, ReLU
+from loss import SoftmaxCrossEntropy
 
 def LinearTest():
-    layer = layers.Linear(4, 3)
+    layer = Linear(4, 3)
     assert(layer.W.shape == (3, 4))
     x = np.random.randn(4, 1) # input w/ 4 features
     out = layer.forward(x)
@@ -13,7 +14,7 @@ def LinearTest():
     layer.step()
 
 def ReluTest():
-    relu = layers.ReLU()
+    relu = ReLU()
     x = np.array([[1.0], [-0.5], [2.0], [0.0]])
     out = relu.forward(x)
     assert(out[0] == [1.0])
@@ -27,8 +28,13 @@ def ReluTest():
     assert(dx[2] == [1.0])
     assert(dx[3] == [0.0])
     
-
-
+def SoftmaxCrossEntropyTest():
+    sce = SoftmaxCrossEntropy()
+    logits = np.array([2.0, 1.0, 0.1])
+    label = 0
+    probs, loss = sce.forward(logits, label)
+    assert(sum(probs) == 1.0)
 
 LinearTest()
 ReluTest()
+SoftmaxCrossEntropyTest()

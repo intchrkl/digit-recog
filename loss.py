@@ -9,11 +9,16 @@ class SoftmaxCrossEntropy:
         exps = np.exp(logits - np.max(logits))
         return exps / np.sum(exps)
 
-    def cross_entropy(self, y, y_hat):
-        return -np.log(y_hat[y])
+    def cross_entropy(self, probs, label):
+        return -np.log(probs[label])
 
     def forward(self, logits, label):
-        pass
+        self.y = label
+        self.y_hat = self.softmax(logits)
+        loss = self.cross_entropy(self.y_hat, label)
+        return self.y_hat, loss
 
     def backward(self):
-        pass
+        grad = self.y_hat.copy()
+        grad[self.y] -= 1
+        return grad

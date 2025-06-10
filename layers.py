@@ -22,6 +22,14 @@ class Linear:
         self.W -= self.lr * self.dW
         self.b -= self.lr * self.db
 
+    def get_params(self):
+        return {'W': self.W, 'b': self.b}
+
+    def set_params(self, params):
+        self.W = params['W']
+        self.b = params['b']
+
+# Activation fn. - replaces negative values w/ 0.0
 class ReLU:
     def __init__(self):
         self.mask = None

@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 from layers import Linear, ReLU
 from loss import SoftmaxCrossEntropy
@@ -9,6 +10,7 @@ class NeuralNet:
         self.hidden_dim = hidden_dim
         self.output_dim = output_dim
         self.lr = lr
+        self.weights = None
 
         self.linear1 = Linear(input_dim, hidden_dim, lr)
         self.relu = ReLU()
@@ -72,7 +74,7 @@ class NeuralNet:
             losses.append(avg_loss)
 
             if verbose:
-                print(f"Epoch {epoch}, Loss: {avg_loss:.4f}")
+                print(f"Epoch {epoch}, Loss: {float(avg_loss):.4f}")
 
         return losses
 
@@ -88,6 +90,7 @@ class NeuralNet:
 
         n = X.shape[0]
         predictions = []
+        incorrect = []
 
         correct = 0
         for i in range(n):
@@ -96,6 +99,8 @@ class NeuralNet:
             predictions.append(pred)
             if pred == y[i]:
                 correct += 1
+            else:
+                incorrect.append(i)
 
         loss = 1 - (correct / n)
-        return loss, predictions
+        return loss, predictions, incorrect

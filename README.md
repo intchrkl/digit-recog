@@ -1,0 +1,1 @@
+python train.py -l params/ten_epochs.npz

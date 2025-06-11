@@ -11,10 +11,10 @@ def parse_args():
     return parser.parse_args()
 
 def load_data():
-    X_train = Data.parse_images('data/train-images.idx3-ubyte')
-    y_train = Data.parse_labels('data/train-labels.idx1-ubyte')
-    X_test = Data.parse_images('data/t10k-images.idx3-ubyte')
-    y_test = Data.parse_labels('data/t10k-labels.idx1-ubyte')
+    X_train = Data.parse_images('data/mnist/train-images.idx3-ubyte')
+    y_train = Data.parse_labels('data/mnist/train-labels.idx1-ubyte')
+    X_test = Data.parse_images('data/mnist/t10k-images.idx3-ubyte')
+    y_test = Data.parse_labels('data/mnist/t10k-labels.idx1-ubyte')
     return X_train, y_train, X_test, y_test
 
 # Arguments
@@ -49,10 +49,3 @@ input("Begin evaluation?")
 print("Evaluating...")
 loss, predictions, incorrect = nn.evaluate(X_test, y_test)
 print(f"Test error rate: {loss:.4f}")
-
-# while True:
-#     idx = int(input(f"Input data point no. (0 to {len(y_test) - 1}): \n"))
-#     if not 0 <= idx < len(y_test): 
-#         print("Out of bounds.")
-#         continue
-#     Data.visualize_predict(X_test[idx], predictions[idx], y_test[idx])

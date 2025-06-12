@@ -7,7 +7,8 @@ from utils import Data
 # Load model and weights
 input_dim = 784
 model = NeuralNet(input_dim=input_dim, hidden_dim=128, output_dim=10)
-weights = np.load("params/ten_epochs.npz")
+# weights = np.load("params/digits_ten_epochs.npz") # Digits
+weights = np.load("params/letters_ten_epochs.npz") # Letters
 model.linear1.W = weights["W1"]
 model.linear1.b = weights["b1"]
 model.linear2.W = weights["W2"]

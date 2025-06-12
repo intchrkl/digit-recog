@@ -3,18 +3,22 @@ import struct
 import matplotlib.pyplot as plt
 
 class Data:
-    def parse_images(path):
+    def parse_images(path, is_emnist=False):
         with open(path, 'rb') as f:
             magic, num_images, rows, cols = struct.unpack('>IIII', f.read(16))
             images = np.frombuffer(f.read(), dtype=np.uint8)
             images = images.reshape(num_images, rows * cols)
+            if is_emnist:
+                # EMNIST data is rotated
+                images = np.array([img.reshape(28, 28).T.flatten() for img in images])
             return images / 255.0
 
 
-    def parse_labels(path):
+    def parse_labels(path, is_emnist=False):
         with open(path, 'rb') as f:
             magic, num_labels = struct.unpack('>II', f.read(8))
             labels = np.frombuffer(f.read(), dtype=np.uint8)
+            if is_emnist: labels = labels - 1
             return labels
 
     def parse_image_from_txt(path):
@@ -91,3 +95,11 @@ class Data:
                 f.write(f"{label} {pixels}\n")
             else:
                 f.write(f"{pixels}\n")
+
+# X_test = Data.parse_images('data/digits/t10k-images.idx3-ubyte')
+# y_test = Data.parse_labels('data/digits/t10k-labels.idx1-ubyte')
+# X_test = Data.parse_images('data/letters/emnist-letters-test-images-idx3-ubyte', is_emnist=True)
+# y_test = Data.parse_labels('data/letters/emnist-letters-test-labels-idx1-ubyte')
+# X_test = Data.parse_images('data/letters/emnist-letters-train-images-idx3-ubyte', is_emnist=True)
+# y_test = Data.parse_labels('data/letters/emnist-letters-train-labels-idx1-ubyte', is_emnist=True)
+# Data.preview_data(X_test, y_test, 5)
